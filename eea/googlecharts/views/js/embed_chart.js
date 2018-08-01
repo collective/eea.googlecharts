@@ -1,4 +1,4 @@
-/* global drawGoogleChart, getColumnsFromSettings, getQueryParams, patched_each, getAvailable_columns_and_rows, prepareForChart, transformTable  */
+/* global drawGoogleChart, getColumnsFromSettings, getQueryParams, jQuery.each, getAvailable_columns_and_rows, prepareForChart, transformTable  */
 
 /* GLOBALS come from:
 
@@ -8,7 +8,7 @@
  getQueryParams
 
  datatable.js
- patched_each
+ jQuery.each
  getAvailable_columns_and_rows
  getColumnsFromSettings
  prepareForChart
@@ -42,7 +42,7 @@ function drawChart(value, options){
     var embedchart_id = value[0];
     var embedchart_json = value[1];
     var embedchart_columns = value[2];
-    var embedchart_filters = value[3];
+    var embedchart_filters = value[3] || [];
     var embedchart_width = value[4];
     var embedchart_height = value[5];
     var embedchart_filterposition = value[6];
@@ -53,7 +53,7 @@ function drawChart(value, options){
     var embedchart_sortAsc = true;
     var embedchart_ChartNotes = value[16];
     var query_params = getQueryParams("#googlechart_table_" + settings.vhash);
-    patched_each(embedchart_filters, function(key, value){
+    jQuery.each(embedchart_filters, function(key, value){
         if (query_params.rowFilters[key] !== undefined){
             value.defaults = query_params.rowFilters[key];
         }
