@@ -1,6 +1,31 @@
 Changelog
 =========
 
+20.7 - (2020-10-06)
+---------------------------
+* Bug fix: Load charts api from loader.js instead of gsapi in all cases;
+  Use google.setOnLoadCallback instead of jQuery(document).ready
+  [szabozo0 120846]
+
+20.6 - (2020-09-18)
+---------------------------
+* Change: re-enabled resizing of charts when window is resized
+  until every automatic resize is rechecked
+  [ichim-david refs #120397]
+* Change: style tweaks to the daviz tab colors
+  [ichim-david refs #120397]
+
+20.5 - (2020-08-04)
+---------------------------
+* Change: disabled resizing of charts when window is resized
+  this way if needed the resize chart button can be used for a different
+  size
+  [ichim-david refs #119540]
+* Feature: trigger googlecharts.embed.pending event on body in order to allow
+  other javascript to modify the chart markup before it's being drawn by
+  Google Charts
+  [ichim-david refs #119540]
+
 20.4 - (2020-04-08)
 ---------------------------
 * Bug fix: qrcode and watermark images are exported without a transparent

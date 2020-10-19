@@ -1,7 +1,7 @@
 <link href="++resource++eea.googlecharts.view.css" rel="stylesheet" type="text/css"/>
 <link href="++resource++eea.googlecharts.print.css" rel="stylesheet" type="text/css" media="print"/>
 
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript" src="++resource++json2.js"></script>
 <script type="text/javascript" src="++resource++eea.googlecharts.embed_common.js"></script>
 <script type="text/javascript" src="++resource++eea.googlecharts.chart.js"></script>
@@ -52,11 +52,13 @@ jQuery(window).scrollStopped(function(){
         }
     });
 });
+// disable fix from #119540 disable chart resize on window resize
 jQuery(document).ready(function(){
     var charts = jQuery('.embedded-dashboard');
 
-    jQuery(window).resize(_.debounce(function() {
-        jQuery.each(charts, function(idx, elem){
+    jQuery(window).resize(_.debounce(function(ev, data) {
+      var elems = data ? [data['obj']] : charts;
+        jQuery.each(elems, function(idx, elem){
             var $elem = jQuery(elem);
             var vhash = elem.id.split('_')[2];
             var resize_chart_func = window['resize_chart_' + vhash];
@@ -65,12 +67,17 @@ jQuery(document).ready(function(){
             }
         });
     }));
-    charts.bind('eea.embed.loaded', function(){
-        jQuery(window).trigger('resize');
+    charts.bind('eea.embed.loaded', function(ev){
+      jQuery(window).trigger('resize', {obj: ev.target});
     });
 
     jQuery('.embedded-daviz-visualization ul.formTabs a').click(function(){
-        jQuery("#fieldset-"+jQuery(this).attr("id").substr(15) + ' .embedded-dashboard').trigger('eea.embed.loaded');
+      var $elem = jQuery("#fieldset-"+jQuery(this).attr("id").substr(15) + ' .embedded-dashboard');
+      $elem.trigger('eea.embed.loaded');
+      // var $chart = $elem.find('.googlechart_view');
+      // if (!$chart.length || $elem.width() > $chart.width()){
+      //   $elem.trigger('eea.embed.loaded');
+      // }
     });
 });
 </script>
